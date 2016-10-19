@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@model TestSEOAnalyser.Models.SeoAnalyserModel
+<script src="@Url.Content("~/Scripts/jquery-1.10.2.js")" type="text/javascript"></script>
+<div class="jumbotron">
+    <h1>Simple SEO Analysis Tool</h1>
+</div>
+<form id="form">
+    <div class="row">
+        @Html.LabelFor(a => a.InputText, new { @class= "no-margin" })
+        @Html.TextBoxFor(a => a.InputText)
+
+        @Html.LabelFor(a=> a.CalculateExternalLinks)
+        @Html.CheckBoxFor(a => a.CalculateExternalLinks, new { @checked = "checked"})
+
+        @Html.LabelFor(a => a.CalculateStopWords)
+        @Html.CheckBoxFor(a => a.CalculateStopWords, new { @checked = "checked" })
+
+        @Html.LabelFor(a => a.CalculateWords)
+        @Html.CheckBoxFor(a => a.CalculateWords, new { @checked = "checked" })
+
+        @Html.LabelFor(a => a.CalculateWordsInTags)
+        @Html.CheckBoxFor(a => a.CalculateWordsInTags, new { @checked = "checked" })
+    </div>
+    <div>
+        <span id="errorMessage" style="color:red; display:none">*Enter text or URL</span>
+    </div>
+    <div class="row">
+        <input type="button" id="submit" class="btn" value="Submit" title="Submit" />
+    </div>
+    <div class="row" id="result"> </div>
+</form>
+<script type="text/javascript">
+   
+    $('#submit').click(function () {
+        if ($('#InputText').val() === '') {
+            $('#errorMessage').css("display", "block");
+            return;
+        }
+        else {
+            $('#errorMessage').css("display", "none");
+        }
+
+        var _model = $('#form').serialize();
+        var url = '@Url.Action("GetResult", "Home")';
+        $.post(url, _model, function (res) {
+            $("#result").html(res);
+        });
+    })
+</script>
